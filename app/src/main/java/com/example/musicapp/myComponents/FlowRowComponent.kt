@@ -11,62 +11,38 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 /**
- * @author Andrés
+ * @author="Perfecto"
+ * @param
+ * @function
  */
+
 @Composable
-fun FlowAe(){
-
-    FlowRow(modifier = Modifier.padding(8.dp)){
-        TagItem("idm")
-
+fun TagsFlow(
+    tags: List<String>,
+    modifier: Modifier = Modifier,
+    onTagClick: (String) -> Unit = {}
+) {
+    FlowRow(modifier = modifier.padding(8.dp)) {
+        tags.forEach { tag ->
+            TagItem(
+                text = tag,
+                onClick = { onTagClick(tag) }
+            )
+        }
     }
 }
 
 @Composable
-fun FlowAphx(){
-
-    FlowRow(modifier = Modifier.padding(8.dp)){
-        TagItem("idm")
-
-    }
-}
-
-@Composable
-fun FlowBoc(){
-
-    FlowRow(modifier = Modifier.padding(8.dp)){
-        TagItem("idm")
-
-    }
-}
-
-@Composable
-fun FlowKyuss(){
-
-    FlowRow(modifier = Modifier.padding(8.dp)){
-        TagItem("idm")
-
-    }
-}
-@Composable
-fun FlowTool(){
-
-    FlowRow(modifier = Modifier.padding(8.dp)){
-        TagItem("idm")
-
-    }
-}
-@Composable
-fun TagItem(text: String, onClick: () -> Unit = {}) {
+fun TagItem(
+    text: String,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
+) {
     FilterChip(
-        modifier = Modifier.padding(end = 4.dp),
+        modifier = modifier.padding(end = 4.dp),
         onClick = onClick,
-        leadingIcon = {},
         border = BorderStroke(1.dp, Color(0xFF3B3A3C)),
-        label = {
-            Text(text)
-        },
+        label = { Text(text) },
         selected = false
     )
 }
-

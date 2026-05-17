@@ -1,7 +1,7 @@
 package com.example.musicapp.data.remote.api
 
 /**
- * @author Andrés
+ * @author Perfecto
  */
 
 interface AppApiService {

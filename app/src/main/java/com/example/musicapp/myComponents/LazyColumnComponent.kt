@@ -2,6 +2,7 @@ package com.example.musicapp.myComponents
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
@@ -11,75 +12,42 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import com.example.musicapp.data.DatasourceMainScreenPics
+import androidx.compose.ui.unit.dp
 import com.example.musicapp.data.BandsId
+import com.example.musicapp.data.DatasourceMainScreenPics
 import com.example.musicapp.styles.lazyColumnCardModifier
 import com.example.musicapp.styles.styleTextCards
 
 /**
- * @author="Andrés"
+ * @author="Perfecto"
  * @param
  * @function
  */
-//Función que recorrerá el DataSourcesPics le pasamos un modifier y una lista por parámetro
-
 @Composable
-fun CardsList(cardsList: List<BandsId>, modifier: Modifier = Modifier) {
-    Box(lazyColumnCardModifier) {
+fun LazyColumnComponent(modifier: Modifier = Modifier) {
+    val cardsList = DatasourceMainScreenPics().LoadImagesId()
+
+    Box(modifier = lazyColumnCardModifier) {
         LazyColumn(modifier = modifier) {
-
-            items(cardsList) {
-
-                    imagesId ->
-                Cards(
-                    bandsId = imagesId,
-                    //añadir clickable
-
-                )
+            items(cardsList) { item ->
+                BandCard(item)
             }
         }
     }
 }
 
-/**
- * @author="Andrés"
- * @param
- * @function
- */
-//creamos la función imagen para poder acceder a ellas y poder realizar el contenscale
-//pasamos como parámetro un bandsId
 @Composable
-fun Cards(bandsId: BandsId) {
-
-    Card() {
-
+fun BandCard(band: BandsId) {
+    Card(modifier = Modifier.padding(8.dp)) {
         Image(
-            painter = painterResource(bandsId.imageResourceId),
-            contentDescription = "",
-            contentScale = ContentScale.Fit,
+            painter = painterResource(band.imageResourceId),
+            contentDescription = stringResource(band.stringResourceId),
+            contentScale = ContentScale.Crop
         )
         Text(
-
-            text = stringResource(bandsId.stringResourceId),
-            style = styleTextCards
+            text = stringResource(band.stringResourceId),
+            style = styleTextCards,
+            modifier = Modifier.padding(8.dp)
         )
-
     }
-
 }
-
-/**
- * @author="Andrés"
- * @param
- * @function
- */
-//a esta función le mandamos la función ImagesList se crea un imagesList para
-//que recorra el DataSourcesPics.
-@Composable
-fun LazyColumnComponent(modifier: Modifier = Modifier) {
-
-    CardsList(cardsList = DatasourceMainScreenPics().LoadImagesId())
-
-}
-
-

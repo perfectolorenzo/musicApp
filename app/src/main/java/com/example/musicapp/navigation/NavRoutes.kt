@@ -41,3 +41,7 @@ object UserInfoPage
 
 @Serializable
 object DialogPage
+
+@Serializable
+object EditProfilePage
+

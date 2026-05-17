@@ -1,112 +1,76 @@
-package com.example.musicapp.myComponentsw
+package com.example.musicapp.myComponents
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.res.stringResource
+import androidx.compose.runtime.*
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import com.example.musicapp.R
 
-/**
- * @author="Andrés"
- * @param
- * @function
- */
-/*
-Se encarga de gestionar los TextFields y añadir sus etiquetas
- */
 @Composable
-fun TextFieldsComponent() {
-
-    Column {
-        TextFieldUserComponent()
-        TextFieldPassComponent()
-        TextFieldEmailComponent()
-    }
-}
-
-/**
- * @param
- * @function
- */
-@Composable
-fun TextFieldUserComponent() {
-
-    var text by remember { mutableStateOf("") }
-
-    TextField(
-        value = text,
-        onValueChange = { text = it },
-        singleLine = true,
-        label = { Text("user") }
-    )
-}
-
-/**
- * @param
- * @function
- */
-@Composable
-fun TextFieldPassComponent() {
-
-    // Creating a variable to store passwords
-    var pass by remember { mutableStateOf("") }
-    // Creating a variable to store toggle state
+fun CustomTextField(
+    label: String,
+    value: String,
+    onValueChange: (String) -> Unit,
+    keyboardType: KeyboardType = KeyboardType.Text,
+    isPassword: Boolean = false
+) {
     var passwordVisible by remember { mutableStateOf(false) }
 
-    TextField(
-        value = pass,
-        onValueChange = { pass = it },
-        label = { Text("password") },
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
         singleLine = true,
-        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        label = { Text(label) },
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+        visualTransformation = if (isPassword && !passwordVisible)
+            PasswordVisualTransformation()
+        else
+            VisualTransformation.None,
         trailingIcon = {
-//cambia el icono del ojo
-            val image = if (passwordVisible)
-                Icons.Filled.Visibility
-            else Icons.Filled.VisibilityOff
-
-            // Localized description for accessibility services
-            val description = if (passwordVisible) "Hide password" else "Show password"
-
-            // Toggle button to hide or display password
-            IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                Icon(imageVector = image, description)
-
+            if (isPassword) {
+                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    Icon(
+                        imageVector = if (passwordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                        contentDescription = if (passwordVisible) "Ocultar contraseña" else "Mostrar contraseña"
+                    )
+                }
             }
         }
     )
 }
 
-/**
- * @param
- * @function
- */
 @Composable
-fun TextFieldEmailComponent() {
+fun TextFieldsComponent() {
 
-    var text by remember { mutableStateOf("") }
+    var user by remember { mutableStateOf("") }
+    var pass by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
 
-    TextField(
-        value = text,
-        onValueChange = { text = it },
-        singleLine = true,
-        label = {
-            Text(text = stringResource(R.string.email))
-        }
+    CustomTextField(
+        label = "Usuario",
+        value = user,
+        onValueChange = { user = it }
+    )
+
+    CustomTextField(
+        label = "Contraseña",
+        value = pass,
+        onValueChange = { pass = it },
+        keyboardType = KeyboardType.Password,
+        isPassword = true
+    )
+
+    CustomTextField(
+        label = "Email",
+        value = email,
+        onValueChange = { email = it },
+        keyboardType = KeyboardType.Email
     )
 }

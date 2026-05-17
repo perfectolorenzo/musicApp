@@ -7,55 +7,50 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.res.stringResource
-import com.example.musicapp.data.BottomItems
 import com.example.musicapp.R
 
 /**
- * @author: Andrés
- * @function
+ * @author="Perfecto"
+ * @param
  */
-/*
-Función que se encarga de la barra inferior(BottomBar), con sus correspondientes iconos
-guardados en una lista denominada como items.
- */
-@Composable
-fun BottomBar() {
-    var selectedItem by remember { mutableStateOf(0) }
+data class BottomBarItem(
+    val label: String,
+    val icon: androidx.compose.ui.graphics.vector.ImageVector
+)
 
+@Composable
+fun BottomBar(
+    selectedIndex: Int = 0,
+    onItemSelected: (Int) -> Unit = {}
+) {
     val items = listOf(
-        BottomItems.BottomBarItem(label = stringResource(R.string.inicio), Icons.Default.Home),
-        BottomItems.BottomBarItem(label = stringResource(R.string.buscar), Icons.Default.Search),
-        BottomItems.BottomBarItem(label = stringResource(R.string.perfil), Icons.Default.Person)
+        BottomBarItem(stringResource(R.string.inicio), Icons.Default.Home),
+        BottomBarItem(stringResource(R.string.buscar), Icons.Default.Search),
+        BottomBarItem(stringResource(R.string.perfil), Icons.Default.Person)
     )
-//barra de navegación.
+
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.background,
         contentColor = MaterialTheme.colorScheme.onPrimaryContainer
     ) {
         items.forEachIndexed { index, item ->
+            val selected = selectedIndex == index
+
             NavigationBarItem(
+                selected = selected,
+                onClick = { onItemSelected(index) },
                 icon = {
                     Icon(
                         imageVector = item.icon,
-                        contentDescription = item.label,
-                        tint = if (selectedItem == index)
-                            MaterialTheme.colorScheme.primary
-                        else
-                            MaterialTheme.colorScheme.onPrimaryContainer
+                        contentDescription = item.label
                     )
                 },
                 label = {
                     Text(
                         text = item.label,
-                        style = MaterialTheme.typography.labelSmall,
-                        color = if (selectedItem == index)
-                            MaterialTheme.colorScheme.primary
-                        else
-                            MaterialTheme.colorScheme.onPrimaryContainer
+                        style = MaterialTheme.typography.labelSmall
                     )
-                },
-                selected = selectedItem == index,
-                onClick = { selectedItem = index }
+                }
             )
         }
     }

@@ -9,6 +9,7 @@ android {
     namespace = "com.example.musicapp"
     compileSdk = 36
 
+
     defaultConfig {
         applicationId = "com.example.musicapp"
         minSdk = 36
@@ -66,6 +67,8 @@ dependencies {
     implementation(libs.retrofit2.converter.gson)
     implementation(libs.okhttp.logging)
     implementation(libs.androidx.foundation.layout)
+    implementation(libs.androidx.compose.runtime.android)
+    implementation(libs.transport.runtime)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

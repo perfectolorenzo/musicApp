@@ -1,8 +1,6 @@
 package com.example.musicapp.myComponents
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -17,61 +15,41 @@ import com.example.musicapp.data.DatasourceAlbumsPics
 import com.example.musicapp.styles.imageModifier
 
 /**
- * @author="Andrés"
+ * @author="Perfecto"
  * @param
  * @function
  */
-//vista en mosaico recogerá los datos de DataSourceAlbumsPics para mostrar las imágenes en mosaico
 
-
-/*función qué se encarga de gestionar el comportamiento del grid
- configurando el comportamiento de las columnas, su número, los valores de margen entre imágenes,
- etc
- */
 @Composable
-fun ImagesAlbumsList(albumsList: List<AlbumsId>, modifier: Modifier = Modifier) {
-
+fun AlbumsGrid(
+    albums: List<AlbumsId>,
+    modifier: Modifier = Modifier
+) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(4),
         contentPadding = PaddingValues(1.dp),
-        horizontalArrangement = Arrangement.spacedBy(1.dp),
-        verticalArrangement = Arrangement.spacedBy(1.dp),
-
-        ) {
-
-        items(albumsList) {
-
-                albumsId ->
-            ImagesAlbums(
-
-                albumsId = albumsId,
-
-
-                )
+        horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(1.dp),
+        verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(1.dp),
+        modifier = modifier
+    ) {
+        items(albums) { album ->
+            AlbumImage(album)
         }
     }
 }
 
-
-//función que se encarga de la gestión de las imágenes en cuanto a carcterísticas visuales
 @Composable
-fun ImagesAlbums(albumsId: AlbumsId) {
-
-    Box() {
-        Image(
-            painter = painterResource(albumsId.discsResourceId),
-            contentDescription = "",
-            contentScale = ContentScale.Inside,
-            modifier = imageModifier
-
-        )
-    }
+fun AlbumImage(album: AlbumsId) {
+    Image(
+        painter = painterResource(album.discsResourceId),
+        contentDescription = null,
+        contentScale = ContentScale.Inside,
+        modifier = imageModifier
+    )
 }
 
-//se encarga de recoger
 @Composable
 fun GridViewComponent() {
-
-    ImagesAlbumsList(albumsList = DatasourceAlbumsPics().loadAlbumsBands())
-
+    val albums = DatasourceAlbumsPics().loadAlbumsBands()
+    AlbumsGrid(albums)
 }
